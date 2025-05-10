@@ -12,5 +12,11 @@ export default defineConfig({
 	// Fix for Skeleton UI components during SSR
 	ssr: {
 		noExternal: ['@skeletonlabs/skeleton']
+	},
+	// TypeScript configuration
+	optimizeDeps: {
+		esbuildOptions: {
+			tsconfig: './tsconfig.patch.json'
+		}
 	}
 });
