@@ -3,3 +3,213 @@ description:
 globs:
 alwaysApply: false
 ---
+# Buddie Data Models
+
+## Database Models
+
+### User
+
+```python
+class User(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    email: str = Field(unique=True, index=True)
+    name: str
+    hashed_password: str
+    is_active: bool = Field(default=True)
+    is_verified: bool = Field(default=False)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    
+    # Relationships
+    reviews: List["Review"] = Relationship(back_populates="user")
+    favorites: List["Favorite"] = Relationship(back_populates="user")
+```
+
+### Product
+
+```python
+class Product(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str = Field(index=True)
+    description: str
+    brand: str
+    strain_type: str  # Indica, Sativa, Hybrid
+    thc_percentage: float
+    cbd_percentage: float
+    terpenes: Optional[str] = Field(default=None)
+    price: float
+    image_url: Optional[str] = Field(default=None)
+    dispensary: Optional[str] = Field(default=None)
+    is_available: bool = Field(default=True)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    
+    # Relationships
+    reviews: List["Review"] = Relationship(back_populates="product")
+```
+
+### Review
+
+```python
+class Review(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    rating: int  # 1-5 stars
+    review_text: Optional[str] = Field(default=None)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    
+    # Foreign keys
+    user_id: int = Field(foreign_key="user.id")
+    product_id: int = Field(foreign_key="product.id")
+    
+    # Relationships
+    user: "User" = Relationship(back_populates="reviews")
+    product: Product = Relationship(back_populates="reviews")
+```
+
+### Favorite
+
+```python
+class Favorite(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    
+    # Foreign keys
+    user_id: int = Field(foreign_key="user.id")
+    product_id: int = Field(foreign_key="product.id")
+    
+    # Relationships
+    user: "User" = Relationship(back_populates="favorites")
+    product: Product = Relationship()
+```
+
+## API Schemas
+
+### User Schemas
+
+```python
+class UserBase(BaseModel):
+    email: EmailStr
+    name: str
+    is_active: bool = True
+
+class UserCreate(UserBase):
+    password: str
+
+class UserResponse(UserBase):
+    id: int
+    is_verified: bool
+    created_at: datetime
+```
+
+### Product Schemas
+
+```python
+class ProductBase(BaseModel):
+    name: str
+    description: str
+    brand: str
+    strain_type: str
+    thc_percentage: float
+    cbd_percentage: float
+    terpenes: Optional[str] = None
+    price: float
+    image_url: Optional[str] = None
+    dispensary: Optional[str] = None
+    is_available: bool = True
+
+class ProductCreate(ProductBase):
+    pass
+
+class ProductResponse(ProductBase):
+    id: int
+    created_at: datetime
+```
+
+### Review Schemas
+
+```python
+class ReviewBase(BaseModel):
+    rating: int
+    review_text: Optional[str] = None
+
+class ReviewCreate(ReviewBase):
+    product_id: int
+
+class ReviewResponse(ReviewBase):
+    id: int
+    created_at: datetime
+    user_id: int
+    product_id: int
+```
+
+## TypeScript Interfaces
+
+### User Interfaces
+
+```typescript
+interface User {
+  id: number;
+  email: string;
+  name: string;
+  isActive: boolean;
+  isVerified: boolean;
+  createdAt: string;
+}
+
+interface UserCreateRequest {
+  email: string;
+  name: string;
+  password: string;
+}
+```
+
+### Product Interfaces
+
+```typescript
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  brand: string;
+  strainType: string;
+  thcPercentage: number;
+  cbdPercentage: number;
+  terpenes?: string;
+  price: number;
+  imageUrl?: string;
+  dispensary?: string;
+  isAvailable: boolean;
+  createdAt: string;
+}
+
+interface ProductCreateRequest {
+  name: string;
+  description: string;
+  brand: string;
+  strainType: string;
+  thcPercentage: number;
+  cbdPercentage: number;
+  terpenes?: string;
+  price: number;
+  imageUrl?: string;
+  dispensary?: string;
+  isAvailable: boolean;
+}
+```
+
+### Review Interfaces
+
+```typescript
+interface Review {
+  id: number;
+  rating: number;
+  reviewText?: string;
+  createdAt: string;
+  userId: number;
+  productId: number;
+}
+
+interface ReviewCreateRequest {
+  rating: number;
+  reviewText?: string;
+  productId: number;
+}
+```

@@ -3,3 +3,84 @@ description:
 globs:
 alwaysApply: false
 ---
+# Buddie Backend
+
+## Technology Stack
+
+- **Framework**: FastAPI
+- **ORM**: SQLModel (SQLAlchemy + Pydantic)
+- **Database**: PostgreSQL
+- **Authentication**: JWT + OAuth
+- **Web Scraping**: Playwright + Custom scrapers
+- **ML**: scikit-learn, TensorFlow
+
+## Code Organization
+
+### Main Structure
+
+- `app/main.py`: Application entry point, FastAPI setup
+- `app/models/`: Database models using SQLModel
+- `app/schemas/`: Pydantic schemas for validation
+- `app/api/`: API endpoints
+- `app/auth/`: Authentication system
+- `app/services/`: Business logic
+- `app/scrapers/`: Web scraper modules
+- `app/ml/`: Machine learning modules
+
+### Database Models
+
+- `User`: User accounts and profile information
+- `Product`: Cannabis product details
+- `Review`: User reviews of products
+- `Favorite`: User's saved/favorited products
+
+### API Endpoints
+
+- `/api/v1/products`: Product management
+  - `GET /`: List products with filtering
+  - `GET /{id}`: Get product by ID
+  - `POST /`: Create product (admin)
+  - `GET /search/{query}`: Search products
+  
+- `/api/v1/users`: User management and interactions
+  - `GET /me`: Current user info
+  - `POST /reviews`: Add product review
+  - `GET /reviews`: Get user's reviews
+  - `POST /favorites/{id}`: Add favorite
+  - `DELETE /favorites/{id}`: Remove favorite
+  
+- `/api/v1/recommendations`: Recommendation engine
+  - `GET /`: Get personalized recommendations
+  - `GET /similar/{id}`: Get similar products
+  
+- `/auth`: Authentication
+  - `POST /token`: Login
+  - `POST /register`: Register new user
+
+## Development Guidelines
+
+### FastAPI Patterns
+
+- Use dependency injection for database sessions
+- Use Pydantic models for request/response schemas
+- Implement proper error handling with status codes
+- Document API with docstrings for auto-generated docs
+
+### Database Access
+
+- Always use `get_session` dependency for database access
+- Use SQLModel for type-safe database operations
+- Use proper transactions for multi-step operations
+
+### Authentication
+
+- JWT tokens stored in HTTPOnly cookies
+- Implement proper token refresh flow
+- Use `get_current_user` dependency for protected routes
+
+### Web Scraping
+
+- Extend `BaseScraper` class for new scrapers
+- Implement anti-detection measures
+- Normalize product data before storage
+- Handle errors gracefully

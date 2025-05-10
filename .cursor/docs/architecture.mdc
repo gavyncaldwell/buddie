@@ -3,3 +3,71 @@ description:
 globs:
 alwaysApply: false
 ---
+# Buddie Architecture
+
+## Overview
+
+Buddie is a cannabis concierge application that helps users track, rate, and discover cannabis products. The application uses a monolithic architecture with clear separations between frontend and backend components.
+
+## System Components
+
+### Frontend (SvelteKit + TypeScript)
+
+- **Technology**: SvelteKit, TypeScript, Skeleton UI (Tailwind)
+- **Purpose**: Provides responsive PWA interface for users to interact with the app
+- **Structure**:
+  - `/frontend/src/routes`: Page routes using SvelteKit file-based routing
+  - `/frontend/src/components`: Reusable UI components
+  - `/frontend/src/lib`: Shared utilities, types, and API clients
+  - `/frontend/src/stores`: Svelte stores for state management
+
+### Backend (Python FastAPI)
+
+- **Technology**: FastAPI, SQLModel, PostgreSQL
+- **Purpose**: Provides API endpoints, authentication, and business logic
+- **Structure**:
+  - `/backend/app/api`: REST API endpoints
+  - `/backend/app/models`: Database models
+  - `/backend/app/schemas`: Pydantic schemas for validation
+  - `/backend/app/auth`: Authentication system
+  - `/backend/app/services`: Business logic
+  - `/backend/app/scrapers`: Web scrapers for dispensary data
+  - `/backend/app/ml`: Machine learning recommendation engine
+
+### Database
+
+- **Technology**: PostgreSQL on fly.io
+- **Schema**:
+  - Users: Authentication and profile information
+  - Products: Cannabis product information
+  - Reviews: User reviews and ratings of products
+  - Favorites: User's saved products
+
+## Data Flow
+
+1. **User Authentication**:
+   - Frontend sends credentials to `/auth/token` endpoint
+   - Backend validates and returns JWT
+   - JWT stored in frontend for subsequent requests
+
+2. **Product Discovery**:
+   - User searches or browses products through frontend
+   - Backend queries database and returns results
+   - ML engine suggests similar products
+
+3. **Reviews and Ratings**:
+   - User submits reviews through frontend forms
+   - Backend validates and stores in database
+   - ML engine updates recommendation data
+
+4. **Data Collection**:
+   - Scheduled scrapers collect product data from dispensaries
+   - Data normalized and stored in the database
+
+## Deployment
+
+- **Infrastructure**: fly.io
+- **Components**:
+  - Combined SvelteKit frontend and FastAPI backend
+  - PostgreSQL database
+  - Redis for caching

@@ -3,3 +3,121 @@ description:
 globs:
 alwaysApply: false
 ---
+# Buddie Development Workflow
+
+## Setup
+
+1. Clone the repository
+2. Run `make setup` to install dependencies for both frontend and backend
+3. Start the development environment with `make dev`
+
+## Development Process
+
+### Feature Development
+
+1. **Branch Creation**: Create a feature branch from `main`
+   ```bash
+   git checkout -b feature/feature-name
+   ```
+
+2. **Implementation**:
+   - Write code that follows project standards
+   - Add tests for new functionality
+   - Document code with docstrings and comments
+
+3. **Code Quality**:
+   - Format code: `make format`
+   - Lint code: `make lint`
+   - Run tests: `make test`
+
+4. **Commit Changes**:
+   - Make atomic commits
+   - Follow conventional commit format
+   ```
+   type(scope): description
+   ```
+   - Types: feat, fix, docs, style, refactor, test, chore
+
+5. **Pull Request**:
+   - Push branch to remote
+   - Create pull request to `main`
+   - Address review comments
+
+### Backend Development
+
+1. Define API contracts with Pydantic schemas
+2. Implement database models
+3. Create API endpoints
+4. Add tests
+5. Document with docstrings
+
+### Frontend Development
+
+1. Define page routes
+2. Create UI components
+3. Implement API integration
+4. Add state management
+5. Style components with Tailwind
+
+## Testing
+
+### Backend Testing
+
+- Unit tests with pytest
+- API tests with TestClient
+- Run with `cd backend && make test`
+
+### Frontend Testing
+
+- Component tests with Svelte Testing Library
+- End-to-end tests with Playwright (future)
+- Run with `cd frontend && npm run test`
+
+## Deployment
+
+### Development
+
+- Local development with Docker Compose
+- Run with `make dev`
+
+### Staging (Future)
+
+- Automatic deployment to staging environment
+- Run with `make deploy-staging`
+
+### Production
+
+- Manual deployment to production
+- Run with `make deploy`
+
+## Conventions
+
+### Code Style
+
+- Backend: Black, isort, flake8
+- Frontend: Prettier, ESLint
+
+### Naming Conventions
+
+- **Python**:
+  - snake_case for variables, functions, methods
+  - PascalCase for classes
+  - UPPER_CASE for constants
+
+- **TypeScript/Svelte**:
+  - camelCase for variables, functions, methods
+  - PascalCase for components, classes, interfaces
+  - UPPER_CASE for constants
+
+### Git Guidelines
+
+- Keep commits focused and atomic
+- Write clear commit messages
+- Rebase feature branches on main before PR
+- Squash commits when merging to main
+
+### Documentation
+
+- API endpoints documented with docstrings
+- Components documented with JSDoc comments
+- Update architecture docs for significant changes
