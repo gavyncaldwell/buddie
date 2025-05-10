@@ -5,82 +5,112 @@ alwaysApply: false
 ---
 # Buddie Backend
 
+## Architecture
+
+The backend of Buddie is built with FastAPI and SQLModel, providing a robust and type-safe API framework.
+
+### Key Components
+
+1. **API Layer**: FastAPI routes and endpoints
+2. **Service Layer**: Business logic
+3. **Data Layer**: Database models and queries
+4. **Infrastructure**: Authentication, caching, etc.
+
 ## Technology Stack
 
-- **Framework**: FastAPI
+- **Framework**: FastAPI (with Pydantic)
 - **ORM**: SQLModel (SQLAlchemy + Pydantic)
 - **Database**: PostgreSQL
 - **Authentication**: JWT + OAuth
-- **Web Scraping**: Playwright + Custom scrapers
-- **ML**: scikit-learn, TensorFlow
+- **Caching**: Redis
+- **Task Queue**: Celery (future)
+- **Testing**: pytest
+
+## Directory Structure
+
+```
+backend/
+├── app/
+│   ├── api/
+│   │   ├── dependencies/
+│   │   └── endpoints/
+│   ├── auth/
+│   ├── core/
+│   ├── db/
+│   ├── models/
+│   ├── schemas/
+│   ├── services/
+│   └── utils/
+├── migrations/
+└── tests/
+```
+
+## Development Environment
+
+### Setup
+
+The backend is now set up using Docker:
+
+1. Docker and Docker Compose must be installed
+2. Run `make dev` to start all services
+3. The backend service will automatically reload on code changes
+
+### Configuration
+
+Configuration is handled through environment variables:
+
+- During development: Set in `docker-compose.yml`
+- In production: Set through fly.io secrets or environment variables
+
+### Database Access
+
+- Direct connection via external tools: localhost:5433
+- Web interface via Adminer: http://localhost:8082
+- Connection parameters for development:
+  - Host: localhost (or postgres from within Docker)
+  - Port: 5433 (external) or 5432 (internal)
+  - User: buddie
+  - Password: buddie
+  - Database: buddie
+
+## API Documentation
+
+- Swagger UI: http://localhost:8001/docs
+- ReDoc: http://localhost:8001/redoc
+
+## Authentication
+
+- JWT-based authentication
+- OAuth providers (Google, etc.)
+- Role-based access control
+
+## Database Models
+
+See [Models Documentation](.cursor/docs/models.mdc) for details.
+
+## Testing
+
+- Unit tests: Test individual components in isolation
+- Integration tests: Test components together
+- API tests: Test endpoints through the HTTP interface
+
+Run tests with:
+
+```bash
+make test-backend
+```
+
+## Best Practices
+
+1. **Type Safety**: Use Pydantic models for all API inputs and outputs
+2. **Dependency Injection**: Use FastAPI's dependency injection system
+3. **Layered Architecture**: Separate concerns between API, services, and data access
+4. **Testing**: Write tests for all functionality
+5. **Documentation**: Document all endpoints with docstrings
 
 ## Code Organization
 
 ### Main Structure
 
 - `app/main.py`: Application entry point, FastAPI setup
-- `app/models/`: Database models using SQLModel
-- `app/schemas/`: Pydantic schemas for validation
-- `app/api/`: API endpoints
-- `app/auth/`: Authentication system
-- `app/services/`: Business logic
-- `app/scrapers/`: Web scraper modules
-- `app/ml/`: Machine learning modules
-
-### Database Models
-
-- `User`: User accounts and profile information
-- `Product`: Cannabis product details
-- `Review`: User reviews of products
-- `Favorite`: User's saved/favorited products
-
-### API Endpoints
-
-- `/api/v1/products`: Product management
-  - `GET /`: List products with filtering
-  - `GET /{id}`: Get product by ID
-  - `POST /`: Create product (admin)
-  - `GET /search/{query}`: Search products
-  
-- `/api/v1/users`: User management and interactions
-  - `GET /me`: Current user info
-  - `POST /reviews`: Add product review
-  - `GET /reviews`: Get user's reviews
-  - `POST /favorites/{id}`: Add favorite
-  - `DELETE /favorites/{id}`: Remove favorite
-  
-- `/api/v1/recommendations`: Recommendation engine
-  - `GET /`: Get personalized recommendations
-  - `GET /similar/{id}`: Get similar products
-  
-- `/auth`: Authentication
-  - `POST /token`: Login
-  - `POST /register`: Register new user
-
-## Development Guidelines
-
-### FastAPI Patterns
-
-- Use dependency injection for database sessions
-- Use Pydantic models for request/response schemas
-- Implement proper error handling with status codes
-- Document API with docstrings for auto-generated docs
-
-### Database Access
-
-- Always use `get_session` dependency for database access
-- Use SQLModel for type-safe database operations
-- Use proper transactions for multi-step operations
-
-### Authentication
-
-- JWT tokens stored in HTTPOnly cookies
-- Implement proper token refresh flow
-- Use `get_current_user` dependency for protected routes
-
-### Web Scraping
-
-- Extend `BaseScraper` class for new scrapers
-- Implement anti-detection measures
-- Normalize product data before storage
-- Handle errors gracefully
+- `

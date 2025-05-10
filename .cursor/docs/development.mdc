@@ -9,6 +9,8 @@ alwaysApply: false
 
 1. Clone the repository
 2. Run `make setup` to install dependencies for both frontend and backend
+   - The frontend setup installs npm packages
+   - The backend setup is handled via Docker
 3. Start the development environment with `make dev`
 
 ## Development Process
@@ -65,13 +67,13 @@ alwaysApply: false
 
 - Unit tests with pytest
 - API tests with TestClient
-- Run with `cd backend && make test`
+- Run with `make test-backend`
 
 ### Frontend Testing
 
 - Component tests with Svelte Testing Library
 - End-to-end tests with Playwright (future)
-- Run with `cd frontend && npm run test`
+- Run with `make test-frontend`
 
 ## Deployment
 
@@ -79,6 +81,13 @@ alwaysApply: false
 
 - Local development with Docker Compose
 - Run with `make dev`
+- Access services at:
+  - Frontend: http://localhost:3001
+  - Backend API: http://localhost:8001
+  - API docs: http://localhost:8001/docs
+  - Adminer (database): http://localhost:8082
+  - PostgreSQL: localhost:5433 (for external tools)
+  - Redis: localhost:6379 (for external tools)
 
 ### Staging (Future)
 

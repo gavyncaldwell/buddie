@@ -88,9 +88,10 @@ Example commit messages:
 1. Clone this repository
 2. Run `make setup` to install dependencies
 3. Run `make dev` to start the development environment
-4. Frontend will be available at: http://localhost:3000
-5. Backend API will be available at: http://localhost:8000
-6. API docs will be available at: http://localhost:8000/docs
+4. Frontend will be available at: http://localhost:3001
+5. Backend API will be available at: http://localhost:8001
+6. API docs will be available at: http://localhost:8001/docs
+7. Adminer (database admin) will be available at: http://localhost:8082
 
 ## VSCode Configuration
 

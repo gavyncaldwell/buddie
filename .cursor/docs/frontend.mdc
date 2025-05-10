@@ -5,94 +5,126 @@ alwaysApply: false
 ---
 # Buddie Frontend
 
+## Architecture
+
+The frontend of Buddie is built with SvelteKit, providing a modern and efficient development experience.
+
+### Key Components
+
+1. **Routing**: SvelteKit file-based routing system
+2. **Components**: Reusable UI components
+3. **Stores**: State management with Svelte stores
+4. **API Client**: Interaction with the backend API
+
 ## Technology Stack
 
 - **Framework**: SvelteKit
 - **Language**: TypeScript
-- **UI Components**: Skeleton UI (Tailwind-based)
-- **State Management**: Svelte stores
-- **Form Validation**: Zod
-- **API Client**: Custom fetch wrapper with TypeScript types
+- **Styling**: TailwindCSS + Skeleton UI
 - **PWA**: Vite PWA plugin
+- **Form Handling**: Zod for validation
+- **Testing**: Vitest + Testing Library
 
-## Code Organization
+## Directory Structure
 
-### Main Structure
+```
+frontend/
+├── src/
+│   ├── components/
+│   │   ├── common/
+│   │   ├── layout/
+│   │   └── products/
+│   ├── lib/
+│   │   ├── api/
+│   │   ├── stores/
+│   │   └── utils/
+│   ├── routes/
+│   │   ├── login/
+│   │   ├── products/
+│   │   └── profile/
+│   └── app.html
+├── static/
+│   ├── fonts/
+│   └── images/
+└── tests/
+```
 
-- `src/routes/`: SvelteKit file-based routing
-- `src/lib/`: Shared utilities, types, and helpers
-- `src/components/`: Reusable UI components
-- `src/stores/`: State management with Svelte stores
+## Development Environment
 
-### Key Components
+### Setup
 
-#### Routes
+1. Run `make setup-frontend` to install dependencies
+2. Run `make dev` to start the development server
+3. Access the frontend at http://localhost:3001
 
-- `/`: Home page with featured products and user recommendations
-- `/products`: Product browsing and filtering
-- `/products/[id]`: Product detail page
-- `/profile`: User profile and settings
-- `/reviews`: User's product reviews
-- `/favorites`: User's favorite products
-- `/auth`: Authentication pages
+### Configuration
 
-#### Components
+The frontend is configured through environment variables:
 
-- `ProductCard`: Displays product summary
-- `ProductDetail`: Comprehensive product information
-- `StarRating`: Interactive star rating component
-- `FilterPanel`: Product filtering interface
-- `SearchBar`: Global search functionality
-- `ReviewForm`: Form for submitting product reviews
-- `AuthForm`: Login and registration form
+- During development: Set in `.env` files or docker-compose.yml
+- In production: Set through fly.io environment variables
 
-#### Stores
+## Routing
 
-- `authStore`: Authentication state and user info
-- `productStore`: Product data and filters
-- `notificationStore`: System notifications and alerts
-- `cartStore`: Shopping cart functionality (future)
+SvelteKit uses file-based routing:
 
-## Type Safety
+- `src/routes/+page.svelte` - Home page
+- `src/routes/products/+page.svelte` - Products listing
+- `src/routes/products/[id]/+page.svelte` - Product details
+- `src/routes/login/+page.svelte` - Login page
+- `src/routes/register/+page.svelte` - Registration page
+- `src/routes/profile/+page.svelte` - User profile
 
-### API Types
+## Components
 
-- API request/response types match backend Pydantic schemas
-- Shared interfaces for common data models
-- Type-safe API client functions
+Components are organized by function:
 
-### Component Props
-
-- All component props use TypeScript interfaces
-- Form data validated with Zod schemas
-- Strong typing for store data
+- **Common**: Buttons, inputs, cards, etc.
+- **Layout**: Header, footer, sidebar, etc.
+- **Products**: Product card, product details, etc.
 
 ## State Management
 
-- Use Svelte stores for global state
-- Local component state with reactive variables
-- Persistent state with localStorage/sessionStorage
-- Real-time updates with store subscriptions
+State is managed using Svelte stores:
 
-## Development Guidelines
+- `src/lib/stores/auth.ts` - Authentication state
+- `src/lib/stores/cart.ts` - Shopping cart state
+- `src/lib/stores/products.ts` - Product state and filtering
 
-### Component Design
+## API Integration
 
-- Keep components small and focused
-- Use props for configuration
-- Emit events for parent communication
-- Follow atomic design principles
+All API calls are abstracted in the `src/lib/api` directory:
 
-### Styling
+- `src/lib/api/base.ts` - Base API client with auth handling
+- `src/lib/api/products.ts` - Product-related API calls
+- `src/lib/api/auth.ts` - Authentication-related API calls
 
-- Use Tailwind utility classes
-- Apply Skeleton UI components
-- Maintain responsive design
-- Follow accessibility guidelines
+## Styling
 
-### Performance
+The app uses TailwindCSS with Skeleton UI for styling:
 
-- Lazy-load routes and heavy components
-- Implement proper caching strategies
-- Optimize bundle size
-- Use SSR for initial page load
+- Custom theme defined in `tailwind.config.js`
+- Global styles in `src/app.css`
+- Component-specific styles within component files
+
+## Testing
+
+Tests are written using Vitest and Testing Library:
+
+- Component tests in `tests/components`
+- Route tests in `tests/routes`
+- Utility tests in `tests/lib`
+
+Run tests with:
+
+```bash
+make test-frontend
+```
+
+## Best Practices
+
+1. **Component Design**: Create small, reusable components
+2. **Type Safety**: Use TypeScript for all components and utilities
+3. **Accessibility**: Ensure all components meet WCAG standards
+4. **Testing**: Write tests for all components and critical functionality
+5. **Progressive Enhancement**: Ensure the app works without JavaScript

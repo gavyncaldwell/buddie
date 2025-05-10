@@ -2,25 +2,27 @@
 
 # Install dependencies
 setup:
-	pip install -r requirements-dev.txt
-	pre-commit install
+	python -m venv venv
+	. venv/bin/activate && pip install --upgrade pip
+	. venv/bin/activate && pip install --no-build-isolation -r requirements-dev.txt
+	. venv/bin/activate && pre-commit install
 
 # Format code
 format:
-	black .
-	isort .
+	. venv/bin/activate && black .
+	. venv/bin/activate && isort .
 
 # Lint code
 lint:
-	flake8 .
+	. venv/bin/activate && flake8 .
 
 # Type check
 typecheck:
-	mypy app
+	. venv/bin/activate && mypy app
 
 # Run tests
 test:
-	pytest
+	. venv/bin/activate && pytest
 
 # Run all code quality tools
 check: format lint typecheck test

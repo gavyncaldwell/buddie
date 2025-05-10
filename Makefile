@@ -5,7 +5,7 @@ setup-frontend:
 	cd frontend && npm install && npm run prepare
 
 setup-backend:
-	cd backend && make setup
+	@echo "Backend will be set up via Docker - use 'make dev' to start the containers"
 
 setup: setup-frontend setup-backend
 
@@ -14,7 +14,7 @@ format-frontend:
 	cd frontend && npm run format
 
 format-backend:
-	cd backend && make format
+	docker compose exec backend bash -c "cd /app && black . && isort ."
 
 format: format-frontend format-backend
 
@@ -23,7 +23,7 @@ lint-frontend:
 	cd frontend && npm run lint
 
 lint-backend:
-	cd backend && make lint
+	docker compose exec backend bash -c "cd /app && flake8 ."
 
 lint: lint-frontend lint-backend
 
@@ -32,13 +32,13 @@ test-frontend:
 	cd frontend && npm run check
 
 test-backend:
-	cd backend && make test
+	docker compose exec backend bash -c "cd /app && pytest"
 
 test: test-frontend test-backend
 
 # Development
 dev:
-	docker-compose up
+	docker compose up
 
 # Build
 build:
@@ -50,6 +50,6 @@ deploy:
 
 # Clean
 clean:
-	cd backend && make clean
+	docker compose down -v
 	rm -rf frontend/node_modules
 	rm -rf frontend/.svelte-kit 
