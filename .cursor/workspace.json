@@ -1,0 +1,28 @@
+{
+	"name": "Buddie",
+	"description": "Cannabis concierge application for tracking and recommending products",
+	"documentationFiles": [
+		".cursor/docs/architecture.mdc",
+		".cursor/docs/backend.mdc",
+		".cursor/docs/frontend.mdc",
+		".cursor/docs/development.mdc",
+		".cursor/docs/models.mdc"
+	],
+	"aiRules": ".cursor/ai_rules.md",
+	"contextFolders": ["backend/app", "frontend/src"],
+	"ignoreFolders": ["node_modules", ".svelte-kit", "__pycache__", ".mypy_cache", ".pytest_cache"],
+	"projectStructure": {
+		"backendRoot": "backend",
+		"frontendRoot": "frontend",
+		"docsRoot": "docs"
+	},
+	"runCommands": {
+		"setup": "make setup",
+		"dev": "make dev",
+		"lint": "make lint",
+		"format": "make format",
+		"test": "make test",
+		"build": "make build",
+		"deploy": "make deploy"
+	}
+}

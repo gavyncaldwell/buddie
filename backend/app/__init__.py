@@ -1,0 +1,3 @@
+"""
+Buddie Backend API.
+""" 

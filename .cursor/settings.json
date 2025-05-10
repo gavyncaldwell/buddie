@@ -1,0 +1,26 @@
+{
+	"ai": {
+		"enableAutoCompletion": true,
+		"enableInlineCompletion": true,
+		"generateDocstrings": true
+	},
+	"editor": {
+		"formatOnSave": true,
+		"insertSpaces": true,
+		"tabSize": 2,
+		"wordWrap": "on"
+	},
+	"chat": {
+		"rememberConversationContext": true,
+		"saveChatHistory": true
+	},
+	"terminal": {
+		"defaultShell": "zsh",
+		"fontFamily": "monospace"
+	},
+	"project": {
+		"aiWorkspaceContextEnabled": true,
+		"aiContextIncludeFiles": ["backend/app/**/*.py", "frontend/src/**/*.{svelte,ts,js}"],
+		"aiContextExcludeFiles": ["**/__pycache__/**", "**/node_modules/**", "**/.svelte-kit/**"]
+	}
+}
